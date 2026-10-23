@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://c6pk8pproakdl"]
+
+[ext_resource type="Script" uid="uid://dn6b5jed34gvu" path="res://Set/Audience/laughter_spot.gd" id="1_i56e0"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_qhk7v"]
+size = Vector2(10, 10)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i56e0"]
+particle_flag_disable_z = true
+emission_shape = 1
+emission_sphere_radius = 100.0
+angle_min = 1.0728835e-05
+angle_max = 1.0728835e-05
+gravity = Vector3(0, -98, 0)
+
+[node name="LaughterSpot" type="Control" unique_id=848178492]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_i56e0")
+
+[node name="Control" type="Control" parent="." unique_id=1929276214]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Control" unique_id=805684788]
+unique_name_in_owner = true
+emitting = false
+texture = SubResource("PlaceholderTexture2D_qhk7v")
+lifetime = 2.0
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_i56e0")
