@@ -1,9 +1,7 @@
 [gd_scene format=3 uid="uid://c6pk8pproakdl"]
 
 [ext_resource type="Script" uid="uid://dn6b5jed34gvu" path="res://Set/Audience/laughter_spot.gd" id="1_i56e0"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_qhk7v"]
-size = Vector2(10, 10)
+[ext_resource type="Texture2D" uid="uid://csavjef40jwls" path="res://Set/Audience/ha.png" id="2_t15pd"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i56e0"]
 particle_flag_disable_z = true
@@ -31,7 +29,7 @@ grow_vertical = 2
 [node name="GPUParticles2D" type="GPUParticles2D" parent="Control" unique_id=805684788]
 unique_name_in_owner = true
 emitting = false
-texture = SubResource("PlaceholderTexture2D_qhk7v")
+texture = ExtResource("2_t15pd")
 lifetime = 2.0
 one_shot = true
 process_material = SubResource("ParticleProcessMaterial_i56e0")
