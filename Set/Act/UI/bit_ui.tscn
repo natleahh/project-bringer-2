@@ -1,0 +1,86 @@
+[gd_scene format=3 uid="uid://b1hvb5jsgjnnf"]
+
+[ext_resource type="Script" uid="uid://bqorrfudet55n" path="res://Set/Act/UI/bit_ui.gd" id="1_fm3mw"]
+[ext_resource type="Texture2D" uid="uid://de2cll24omqey" path="res://Set/Act/UI/bit-node.png" id="2_mfe1m"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vt83r"]
+size = Vector2(25, 25)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5jkfg"]
+
+[sub_resource type="Theme" id="Theme_mfe1m"]
+default_font_size = 10
+Label/colors/font_color = Color(0.13333334, 0.1254902, 0.09411765, 1)
+
+[node name="BitUi" type="Node2D" unique_id=514895062]
+script = ExtResource("1_fm3mw")
+
+[node name="BitNode" type="Sprite2D" parent="." unique_id=1840186280]
+self_modulate = Color(1, 1, 0.4627451, 1)
+texture_filter = 1
+texture = ExtResource("2_mfe1m")
+
+[node name="Control" type="Control" parent="BitNode" unique_id=279353266]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -48.0
+offset_right = -74.0
+offset_bottom = -48.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Connectors" type="Control" parent="BitNode/Control" unique_id=1751573861]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CenterContainer" type="HFlowContainer" parent="BitNode/Control/Connectors" unique_id=152620250]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 25.0
+grow_horizontal = 2
+size_flags_vertical = 8
+alignment = 1
+last_wrap_alignment = 3
+
+[node name="TextureRect" type="TextureRect" parent="BitNode/Control/Connectors/CenterContainer" unique_id=1503432987]
+layout_mode = 2
+texture = SubResource("PlaceholderTexture2D_vt83r")
+
+[node name="Icon" type="TextureRect" parent="BitNode/Control" unique_id=250990730]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 18.0
+offset_right = 38.0
+offset_bottom = 46.0
+texture = SubResource("PlaceholderTexture2D_5jkfg")
+
+[node name="Effect Text" type="VBoxContainer" parent="BitNode/Control" unique_id=381189214]
+layout_mode = 0
+offset_left = 42.0
+offset_top = 23.0
+offset_right = 137.0
+offset_bottom = 100.0
+theme = SubResource("Theme_mfe1m")
+
+[node name="Label" type="Label" parent="BitNode/Control/Effect Text" unique_id=293003219]
+layout_mode = 2
+text = "Effect one"
+
+[node name="Label2" type="Label" parent="BitNode/Control/Effect Text" unique_id=685473387]
+layout_mode = 2
+text = "????"
+
+[node name="Label3" type="Label" parent="BitNode/Control/Effect Text" unique_id=511791326]
+layout_mode = 2
+text = "????"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=362005152]
