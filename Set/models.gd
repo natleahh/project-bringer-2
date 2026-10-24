@@ -45,3 +45,11 @@ class ComedyVector4:
 			return ComedyVector4._apply_each(callable, _data, variant)
 		else:
 			return ComedyVector4.new(_data.map(func (each): return callable.call(each, variant)))
+
+class BitData extends Resource:
+	var texture: Texture2D
+	var position: Vector2
+	var connectors: ConnectorData
+
+class ConnectorData extends Resource:
+	var type: ComedyType
