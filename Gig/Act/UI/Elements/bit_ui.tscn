@@ -1,10 +1,8 @@
 [gd_scene format=3 uid="uid://b1hvb5jsgjnnf"]
 
-[ext_resource type="Script" uid="uid://bqorrfudet55n" path="res://Set/Act/UI/bit_ui.gd" id="1_fm3mw"]
-[ext_resource type="Texture2D" uid="uid://de2cll24omqey" path="res://Set/Act/UI/bit-node.png" id="2_mfe1m"]
-
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vt83r"]
-size = Vector2(25, 25)
+[ext_resource type="Script" uid="uid://bqorrfudet55n" path="res://Gig/Act/UI/Elements/bit_ui.gd" id="1_fm3mw"]
+[ext_resource type="Texture2D" uid="uid://de2cll24omqey" path="res://Gig/Act/UI/Elements/bit-node.png" id="2_mfe1m"]
+[ext_resource type="PackedScene" uid="uid://copql5xy0nk6j" path="res://Gig/Act/UI/Elements/connector_ui.tscn" id="3_pp8ei"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5jkfg"]
 
@@ -12,8 +10,15 @@ size = Vector2(25, 25)
 default_font_size = 10
 Label/colors/font_color = Color(0.13333334, 0.1254902, 0.09411765, 1)
 
-[node name="BitUi" type="Node2D" unique_id=514895062]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gajms"]
+size = Vector2(148, 96)
+
+[node name="BitUi" type="RigidBody2D" unique_id=537460357]
+input_pickable = true
+gravity_scale = 0.0
+lock_rotation = true
 script = ExtResource("1_fm3mw")
+metadata/_edit_group_ = true
 
 [node name="BitNode" type="Sprite2D" parent="." unique_id=1840186280]
 self_modulate = Color(1, 1, 0.4627451, 1)
@@ -31,6 +36,21 @@ offset_right = -74.0
 offset_bottom = -48.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
+
+[node name="HoverSelect" type="ColorRect" parent="BitNode/Control" unique_id=1980531059]
+unique_name_in_owner = true
+visible = false
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_enabled = true
+offset_transform_scale = Vector2(1.1, 1.1)
+mouse_filter = 2
 
 [node name="Connectors" type="Control" parent="BitNode/Control" unique_id=1751573861]
 layout_mode = 1
@@ -40,6 +60,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="CenterContainer" type="HFlowContainer" parent="BitNode/Control/Connectors" unique_id=152620250]
 layout_mode = 1
@@ -48,19 +69,21 @@ anchor_right = 1.0
 offset_bottom = 25.0
 grow_horizontal = 2
 size_flags_vertical = 8
+mouse_filter = 2
 alignment = 1
 last_wrap_alignment = 3
 
-[node name="TextureRect" type="TextureRect" parent="BitNode/Control/Connectors/CenterContainer" unique_id=1503432987]
+[node name="TextureRect" parent="BitNode/Control/Connectors/CenterContainer" unique_id=1954389824 instance=ExtResource("3_pp8ei")]
 layout_mode = 2
-texture = SubResource("PlaceholderTexture2D_vt83r")
 
 [node name="Icon" type="TextureRect" parent="BitNode/Control" unique_id=250990730]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 10.0
 offset_top = 18.0
 offset_right = 38.0
 offset_bottom = 46.0
+mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_5jkfg")
 
 [node name="Effect Text" type="VBoxContainer" parent="BitNode/Control" unique_id=381189214]
@@ -69,6 +92,7 @@ offset_left = 42.0
 offset_top = 23.0
 offset_right = 137.0
 offset_bottom = 100.0
+mouse_filter = 2
 theme = SubResource("Theme_mfe1m")
 
 [node name="Label" type="Label" parent="BitNode/Control/Effect Text" unique_id=293003219]
@@ -83,4 +107,5 @@ text = "????"
 layout_mode = 2
 text = "????"
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=362005152]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=500918484]
+shape = SubResource("RectangleShape2D_gajms")

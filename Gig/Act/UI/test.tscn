@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dmvbesgutye0c"]
+
+[ext_resource type="Script" uid="uid://dwfmp00qum6c5" path="res://Gig/Act/UI/test.gd" id="1_hvs4b"]
+[ext_resource type="PackedScene" uid="uid://c25p4q0xod86j" path="res://Gig/Act/UI/Elements/link_ui.tscn" id="1_xu58e"]
+[ext_resource type="PackedScene" uid="uid://b1hvb5jsgjnnf" path="res://Gig/Act/UI/Elements/bit_ui.tscn" id="2_jsrhv"]
+
+[node name="Test" type="Node2D" unique_id=715091206]
+script = ExtResource("1_hvs4b")
+
+[node name="LinkUI" parent="." unique_id=1458908462 node_paths=PackedStringArray("node_a", "node_b") instance=ExtResource("1_xu58e")]
+node_a = NodePath("../BitUi")
+node_b = NodePath("../BitUi2")
+points = Array[Vector2]([Vector2(699, 329), Vector2(335, 350)])
+width = 3.0
+
+[node name="BitUi" parent="." unique_id=514895062 instance=ExtResource("2_jsrhv")]
+position = Vector2(699, 329)
+
+[node name="BitUi2" parent="." unique_id=1727215628 instance=ExtResource("2_jsrhv")]
+position = Vector2(335, 350)
+
+[connection signal="request_selection_end" from="BitUi" to="." method="_on_bit_ui_request_selection_end" flags=18]
+[connection signal="request_selection_start" from="BitUi" to="." method="_on_bit_ui_request_selection_start" flags=18]

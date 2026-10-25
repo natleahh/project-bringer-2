@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b1d0ay35apkpv"]
 
-[ext_resource type="Script" uid="uid://bto12oy747q5q" path="res://Set/Audience/laughter_screen.gd" id="1_8mcn6"]
-[ext_resource type="Script" uid="uid://k7rxrx2jxqjo" path="res://Set/Audience/audience_ui.gd" id="1_ats1j"]
+[ext_resource type="Script" uid="uid://bto12oy747q5q" path="res://Gig/Audience/laughter_screen.gd" id="1_8mcn6"]
+[ext_resource type="Script" uid="uid://k7rxrx2jxqjo" path="res://Gig/Audience/audience_ui.gd" id="1_ats1j"]
 
 [node name="AudienceUI" type="CanvasLayer" unique_id=827408328]
 script = ExtResource("1_ats1j")

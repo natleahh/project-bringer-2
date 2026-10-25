@@ -63,3 +63,7 @@ func unlink(link: ActLink) -> void:
 	# Disconnecr
 	links.erase(link)
 	link.unlinked.emit()
+
+func toggle_link(link: ActLink) -> void:
+	link.active = not link.active
+	link.changed.emit()

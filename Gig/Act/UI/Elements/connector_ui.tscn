@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://copql5xy0nk6j"]
+
+[ext_resource type="Script" uid="uid://fd0basf4fhq0" path="res://Gig/Act/UI/Elements/connector_ui.gd" id="1_8fd4y"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vt83r"]
+size = Vector2(25, 25)
+
+[node name="TextureRect" type="TextureRect" unique_id=1954389824]
+mouse_filter = 2
+texture = SubResource("PlaceholderTexture2D_vt83r")
+script = ExtResource("1_8fd4y")
+metadata/_custom_type_script = "uid://fd0basf4fhq0"

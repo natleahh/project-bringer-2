@@ -17,3 +17,10 @@ var connectors: Array[ActConnector]:
 func _init(bit_data: Models.BitData, act: ActState) -> void:
 	_graph = act
 	data = bit_data
+
+func get_neighbours() -> Array[ActNode]:
+	return (
+		connectors
+		.filter(func (c: ActConnector): return c.partner != null)
+		.map(func (c): return c.partner.bit)
+	)

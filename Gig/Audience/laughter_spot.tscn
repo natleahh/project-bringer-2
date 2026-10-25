@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c6pk8pproakdl"]
 
-[ext_resource type="Script" uid="uid://dn6b5jed34gvu" path="res://Set/Audience/laughter_spot.gd" id="1_i56e0"]
-[ext_resource type="Texture2D" uid="uid://csavjef40jwls" path="res://Set/Audience/ha.png" id="2_t15pd"]
+[ext_resource type="Script" uid="uid://dn6b5jed34gvu" path="res://Gig/Audience/laughter_spot.gd" id="1_i56e0"]
+[ext_resource type="Texture2D" uid="uid://csavjef40jwls" path="res://Gig/Audience/ha.png" id="2_t15pd"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_i56e0"]
 particle_flag_disable_z = true
