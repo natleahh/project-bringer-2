@@ -1,6 +1,7 @@
 class_name ActState extends Object
 
 signal new_bit(node: ActNode)
+signal new_link(node: ActLink)
 
 class NodeFields:
 	var connectors: Array[ActConnector] = []
@@ -39,7 +40,7 @@ func add_bit(bit_data: Models.BitData) -> void:
 		connectors[connector] = ConnectorFields.new(node)
 	
 	# Notifiy listeners
-	new_bit.emit()
+	new_bit.emit(node)
 
 func link_connectors(left: ActConnector, right: ActConnector) -> void:
 	# Remove existing links
@@ -49,6 +50,15 @@ func link_connectors(left: ActConnector, right: ActConnector) -> void:
 	# Create new link
 	var link = ActLink.new(self)
 	links[link] = LinkFields.new(left, right)
+	
+	# Connect connectors to link
+	connectors[left].link = link
+	connectors[right].link = link
+	
+	left.updated.emit()
+	right.updated.emit()
+	
+	new_link.emit(link)
 
 func unlink(link: ActLink) -> void:
 	# Check if connected
