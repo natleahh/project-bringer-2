@@ -1,5 +1,7 @@
 class_name ActConnector extends Object
 
+signal updated
+
 ## Data State
 var data: Models.ConnectorData
 var type: Models.ComedyType:

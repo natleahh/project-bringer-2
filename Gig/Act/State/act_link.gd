@@ -1,5 +1,6 @@
 class_name ActLink extends Object
 
+signal unlinked
 signal updated
 
 ## Connection Depenant State

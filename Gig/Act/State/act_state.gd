@@ -67,8 +67,8 @@ func unlink(link: ActLink) -> void:
 	# Disconnect pair and notify
 	connectors[link.left].link = null
 	connectors[link.right].link = null	
-	link.left.unlinked.emit()
-	link.right.unlinked.emit()
+	link.left.updated.emit()
+	link.right.updated.emit()
 	
 	# Disconnecr
 	links.erase(link)
