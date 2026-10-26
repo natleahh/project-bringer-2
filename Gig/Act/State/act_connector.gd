@@ -26,13 +26,17 @@ func _is_self(connector: ActConnector) -> bool:
 	return connector == self
 
 func is_compatible(connector: ActConnector) -> bool:
-	return (
-		self != connector and
-		type == connector.type and
-		bit != connector.bit and
-		bit not in connector.bit.get_neighbours()
-	)
+	if self == connector:
+		return false
+	if type !=  connector.type:
+		return false
+	if bit == connector.bit:
+		return false
+	if bit in connector.bit.get_neighbours():
+		return false
+	return true
 
+	 
 func get_compatible() -> Array[ActConnector]:
 	return _connection_state.connectors.keys().filter(is_compatible)
 	

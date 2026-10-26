@@ -74,6 +74,15 @@ func unlink(link: ActLink) -> void:
 	links.erase(link)
 	link.unlinked.emit()
 
-func toggle_link(link: ActLink) -> void:
-	link.active = not link.active
-	link.changed.emit()
+func toggle_link(link: ActLink) -> bool:
+	if (
+		# deactivating a link is always allowed
+		link.active 
+		# can activate a link if it has fewer than 2 active already
+		or link.connectors.all( func (c: ActConnector): return c.bit.get_active_count() < 2)
+	):
+		links[link].active = not link.active
+	else:
+		return false
+	link.updated.emit()
+	return true
