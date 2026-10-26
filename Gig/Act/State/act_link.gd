@@ -1,4 +1,4 @@
-class_name ActLink extends Resource
+class_name ActLink extends Object
 
 signal updated
 
