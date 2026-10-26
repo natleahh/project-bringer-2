@@ -1,6 +1,6 @@
 class_name LaughScreen extends HFlowContainer
 
-const LAUGHTER_SPOT = preload("res://Set/Audience/laughter_spot.tscn")
+const LAUGHTER_SPOT = preload("res://Gig/Audience/laughter_spot.tscn")
 
 var laughter_spots: Array[LaughterSpot] = []
 var state: AudienceState
