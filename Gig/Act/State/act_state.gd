@@ -4,9 +4,9 @@ signal new_bit(node: ActNode)
 signal new_link(node: ActLink)
 
 class NodeFields:
-	var connectors: Array[ActConnector] = []
+	var connectors: Array = []
 	
-	func _init(_connectors: Array[ActConnector]) -> void:
+	func _init(_connectors: Array) -> void:
 		connectors = _connectors
 
 class ConnectorFields:
@@ -32,7 +32,7 @@ var links: Dictionary[ActLink, LinkFields] = {}
 func add_bit(bit_data: Models.BitData) -> void:
 	# Create element state objects
 	var node = ActNode.new(bit_data, self)
-	var _connectors: Array[ActConnector] =  bit_data.connectors.map(ActConnector.new.bind(self))
+	var _connectors: Array =  bit_data.connectors.map(ActConnector.new.bind(self))
 	
 	# Connect to graph
 	nodes[node] = NodeFields.new(_connectors)
