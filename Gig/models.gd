@@ -47,9 +47,24 @@ class ComedyVector4:
 			return ComedyVector4.new(_data.map(func (each): return callable.call(each, variant)))
 
 class BitData extends Resource:
-	var texture: Texture2D
-	var position: Vector2
-	var connectors: ConnectorData
+	var texture: Texture2D = PlaceholderTexture2D.new()
+	var position: Vector2 = Vector2.ZERO
+	var connectors: Array
+	
+	func _init(_connectors: Array) -> void:
+		connectors = _connectors 
+	
+	static func get_random() -> BitData:
+		return BitData.new(
+			range(randi_range(3, 4)).map(func (_i): return ConnectorData.get_random())
+		)
 
 class ConnectorData extends Resource:
-	var type: ComedyType
+	var type: ComedyType = ComedyType.Witty
+	
+	func _init(_type: Models.ComedyType) -> void:
+		type = _type
+	
+	static func get_random() -> ConnectorData:
+		return ConnectorData.new(ComedyType.values().pick_random())
+		

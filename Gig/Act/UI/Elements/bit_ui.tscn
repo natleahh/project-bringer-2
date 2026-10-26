@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bqorrfudet55n" path="res://Gig/Act/UI/Elements/bit_ui.gd" id="1_fm3mw"]
 [ext_resource type="Texture2D" uid="uid://de2cll24omqey" path="res://Gig/Act/UI/Elements/bit-node.png" id="2_mfe1m"]
-[ext_resource type="PackedScene" uid="uid://copql5xy0nk6j" path="res://Gig/Act/UI/Elements/connector_ui.tscn" id="3_pp8ei"]
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5jkfg"]
 
@@ -14,45 +13,23 @@ Label/colors/font_color = Color(0.13333334, 0.1254902, 0.09411765, 1)
 size = Vector2(148, 96)
 
 [node name="BitUi" type="RigidBody2D" unique_id=537460357]
-input_pickable = true
 gravity_scale = 0.0
 lock_rotation = true
 script = ExtResource("1_fm3mw")
 metadata/_edit_group_ = true
 
-[node name="BitNode" type="Sprite2D" parent="." unique_id=1840186280]
-self_modulate = Color(1, 1, 0.4627451, 1)
-texture_filter = 1
-texture = ExtResource("2_mfe1m")
-
-[node name="Control" type="Control" parent="BitNode" unique_id=279353266]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -74.0
-offset_top = -48.0
-offset_right = -74.0
-offset_bottom = -48.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-
-[node name="HoverSelect" type="ColorRect" parent="BitNode/Control" unique_id=1980531059]
+[node name="NodeUI" type="TextureButton" parent="." unique_id=1044495892]
 unique_name_in_owner = true
-visible = false
-z_index = -1
-layout_mode = 1
+self_modulate = Color(0.9586609, 0.98403424, 0.7379317, 1)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-offset_transform_enabled = true
-offset_transform_scale = Vector2(1.1, 1.1)
-mouse_filter = 2
+focus_mode = 0
+texture_normal = ExtResource("2_mfe1m")
 
-[node name="Connectors" type="Control" parent="BitNode/Control" unique_id=1751573861]
+[node name="Control" type="Control" parent="NodeUI" unique_id=1751573861]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -62,7 +39,8 @@ grow_horizontal = 2
 grow_vertical = 0
 mouse_filter = 2
 
-[node name="CenterContainer" type="HFlowContainer" parent="BitNode/Control/Connectors" unique_id=152620250]
+[node name="ConnectorsUI" type="HFlowContainer" parent="NodeUI/Control" unique_id=152620250]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
@@ -73,39 +51,48 @@ mouse_filter = 2
 alignment = 1
 last_wrap_alignment = 3
 
-[node name="TextureRect" parent="BitNode/Control/Connectors/CenterContainer" unique_id=1954389824 instance=ExtResource("3_pp8ei")]
-layout_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="NodeUI" unique_id=83508182]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.075
+anchor_top = 0.093
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -3.1000004
+offset_top = 1.0719995
+offset_right = -9.0
+offset_bottom = -11.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
 
-[node name="Icon" type="TextureRect" parent="BitNode/Control" unique_id=250990730]
+[node name="Icon" type="TextureRect" parent="NodeUI/HBoxContainer" unique_id=250990730]
 unique_name_in_owner = true
-layout_mode = 0
-offset_left = 10.0
-offset_top = 18.0
-offset_right = 38.0
-offset_bottom = 46.0
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
 mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_5jkfg")
 
-[node name="Effect Text" type="VBoxContainer" parent="BitNode/Control" unique_id=381189214]
-layout_mode = 0
-offset_left = 42.0
-offset_top = 23.0
-offset_right = 137.0
-offset_bottom = 100.0
+[node name="Effect Text" type="VBoxContainer" parent="NodeUI/HBoxContainer" unique_id=381189214]
+layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 2
 theme = SubResource("Theme_mfe1m")
 
-[node name="Label" type="Label" parent="BitNode/Control/Effect Text" unique_id=293003219]
+[node name="Label" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=293003219]
 layout_mode = 2
 text = "Effect one"
 
-[node name="Label2" type="Label" parent="BitNode/Control/Effect Text" unique_id=685473387]
+[node name="Label2" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=685473387]
 layout_mode = 2
 text = "????"
 
-[node name="Label3" type="Label" parent="BitNode/Control/Effect Text" unique_id=511791326]
+[node name="Label3" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=511791326]
 layout_mode = 2
 text = "????"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=500918484]
+[node name="Collision" type="CollisionShape2D" parent="." unique_id=500918484]
+unique_name_in_owner = true
 shape = SubResource("RectangleShape2D_gajms")

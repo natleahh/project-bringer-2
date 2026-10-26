@@ -1,43 +1,40 @@
-@tool
 class_name LinkUI extends Node2D
 
-signal clicked(button_index: int)
+var width: float = 5
 
-@export var area_2d: Area2D
-@export var collision_polygon_2d: CollisionPolygon2D
+var state: ActLink
+var active: bool:
+	get: return state.active
+var colour: Color:
+	get:
+		var c_i: int = (state.left.data.type as int)
+		var c = Models.ComedyColor[c_i]
+		if active:
+			return c
+		else:
+			return c.blend(Color(0.5, 0.5, 0.5, 0.5))
 
-@export var node_a: BitUI
-@export var node_b: BitUI
+var left: BitUI
+var right: BitUI
+var points: Array[Vector2]:
+	get: return [to_local(left.global_position), to_local(right.global_position)]
+var polygon: PackedVector2Array:
+	get: return width_polygon()
 
-@export var points: Array[Vector2]
 
-@export var width: float = 5
 
-var state: ActLink 
-var active: bool = false
-	#get: return state.active
-var colour: Color = Color.WHITE
-	#get: return Models.ComedyColor[state.left.data.type as int]
-
-func _ready() -> void:
-	#state.changed.connect(_on_moved)
-	node_a.moved.connect(_on_moved)
-	node_b.moved.connect(_on_moved)
+func _init(_state: ActLink, _left: BitUI, _right: BitUI) -> void:
+	state = _state
+	state.unlinked.connect(func (): queue_free())
+	state.updated.connect(queue_redraw)
 	
-func _on_area_2d_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
-	if event is not InputEventMouseButton:
-		return
-	if not event.is_pressed():
-		return
-	clicked.emit(event.button_index)
+	left = _left
+	right = _right
+	left.moved.connect(queue_redraw)
+	right.moved.connect(queue_redraw)
 
-func _on_moved() -> void:
-	points = [to_local(node_a.global_position), to_local(node_b.global_position)]
-	_update_polygon()
-	queue_redraw()
-	
-func width_polygon(_width: float) -> PackedVector2Array:
-	var width_v = points[0].direction_to(points[1]).rotated(PI / 2) * width
+func width_polygon(padding: float = 0.0) -> PackedVector2Array:
+	var width_v = points[0].direction_to(points[1]).rotated(PI / 2) * (width + padding)
 	return PackedVector2Array([
 		points[0] + width_v,
 		points[0] - width_v,
@@ -45,8 +42,5 @@ func width_polygon(_width: float) -> PackedVector2Array:
 		points[1] + width_v,
 	])
 
-func _update_polygon() -> void:
-	collision_polygon_2d.polygon = width_polygon(width)
-
 func _draw() -> void:
-	draw_colored_polygon(collision_polygon_2d.polygon, colour)
+	draw_colored_polygon(polygon, colour)

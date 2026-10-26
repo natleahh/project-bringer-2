@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://crqgt3uk1l382"]
+
+[ext_resource type="Script" uid="uid://df7wr4h1vcw5i" path="res://Gig/Act/UI/editor.gd" id="1_d7an2"]
+
+[node name="Editor" type="Node2D" unique_id=1096838897]
+physics_interpolation_mode = 2
+script = ExtResource("1_d7an2")
+metadata/_custom_type_script = "uid://df7wr4h1vcw5i"
+
+[node name="Connections" type="CanvasLayer" parent="." unique_id=1791215440]
+unique_name_in_owner = true
+
+[node name="Nodes" type="CanvasLayer" parent="." unique_id=1645563372]
+unique_name_in_owner = true
