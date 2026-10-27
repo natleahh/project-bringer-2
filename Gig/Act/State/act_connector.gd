@@ -35,15 +35,16 @@ func is_compatible(connector: ActConnector) -> bool:
 	if bit in connector.bit.get_neighbours():
 		return false
 	return true
-
-	 
+ 
 func get_compatible() -> Array[ActConnector]:
 	return _connection_state.connectors.keys().filter(is_compatible)
 
-func bit_chain(connector: ActConnector, source: ActConnector, chain: Array[ActConnector] = []) -> Array[ActConnector]:
+func connector_path(connector: ActConnector = null, source: ActConnector = null, chain: Array[ActConnector] = []) -> Array[ActConnector]:
+	if connector == null and source == null:
+		return connector_path(self, self, chain)
 	if source in chain:
 		return chain
-	var next: Array[ActConnector] = connector.bit.get_bridges().filter(func (c): return c.link.active and c != connector)
+	var next: Array[ActConnector] = connector.bit.get_bridges().filter(func (c: ActConnector): return c.link.active and c != connector)
 	if next.size() != 1:
 		return chain
-	return bit_chain(next[0].partner, source, chain + [connector])
+	return connector_path(next[0].partner, source, chain + [connector])
