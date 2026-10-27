@@ -1,5 +1,9 @@
 class_name Viewer extends Control
 
+signal play_connector(connector: ActConnector)
+signal create_link(left: ActConnector, right: ActConnector)
+signal toggle_link(link: ActLink)
+
 const BIT_UI: PackedScene = preload("res://Gig/Act/UI/Elements/bit_ui.tscn")
 
 var ui_connectors: Dictionary[ActConnector, ConnectorUI] = {}
@@ -31,29 +35,16 @@ class SelectionCycler:
 
 	func previous() -> Node:
 		return _cycle(false)
-			
 
-@export var act: ActState
-@export var player: ActPlayer
+var current_connector: ActConnector
+var playing: BitUI:
+	get: return null if current_connector == null else ui_bits.get(current_connector.bit)
+var path: Array[BitUI] = []
 
-var playing_node: ActNode:
-	get: return player.connector.bit if player.connector else null
-var blocked_links: Array[ActLink]:
-	get: return player.options.map().bit if player.connector else null
-
-func _ready() -> void:
-	act.new_bit.connect(_on_new_bit)
-	act.new_link.connect(_on_new_link)
 	
-	for _i in 10:
-		_on_button_press()
-
-func _on_button_press():
-	act.add_bit(Models.BitData.get_random())
-
-func _on_new_bit(act_bit: ActNode) -> void:
+func add_bit(act_bit: ActNode) -> void:
 	var bit_ui: BitUI = BIT_UI.instantiate()
-	bit_ui.global_position = get_viewport_rect().size / 2
+	bit_ui.position = act_bit.position
 	bit_ui.state = act_bit
 	ui_bits[act_bit] = bit_ui
 	bit_ui.mouse_entered.connect(_select_link.bind(bit_ui))
@@ -66,15 +57,15 @@ func _on_new_bit(act_bit: ActNode) -> void:
 		connector_ui.mouse_entered.connect(_select_connector.bind(connector_ui))
 		connector_ui.mouse_exited.connect(func (): selected = null)
 
-func _on_new_link(act_link: ActLink) -> void:
+func add_link(act_link: ActLink) -> void:
 	ui_links[act_link] = LinkUI.new(
 		act_link,
 		ui_bits[act_link.left.bit],
 		ui_bits[act_link.right.bit]
 	)
-	
+
 	%Connections.add_child(ui_links[act_link])
-	
+
 func _select_connector(connector_ui: ConnectorUI) -> void:
 	selected = SelectionCycler.new(
 		get_compatible_connectors,
@@ -101,17 +92,29 @@ func handle_input():
 	elif Input.is_action_just_pressed("act_view_cycle_back"):
 		selected.previous()
 	elif Input.is_action_just_pressed("act_view_play") and selected.source is ConnectorUI:
-		player.play_from_connector((selected.source as ConnectorUI).state)
-		
+		play_connector.emit((selected.source as ConnectorUI).state)
+	else:
+		return
+
 func handle_state_update(node: Node):
 	if not  selected.selected:
 		return
 	if node is ConnectorUI:
-		act.link_connectors(node.state, selected.selected.state)
+		create_link.emit(node.state, selected.selected.state)
 	if node is BitUI:
-		act.toggle_link(selected.selected.state)
+		toggle_link.emit(selected.selected.state)
+
+func update_connector_path() -> void:
+	if current_connector == null:
+		return
+	var path_state = current_connector.connector_path()
+	path = path_state.map(func (c: ActConnector): return ui_bits.get(c.bit, []))
 
 func _draw() -> void:
+	draw_selections()
+	draw_player_data()
+
+func draw_selections() -> void:
 	if selected == null:
 		return
 	draw_selector_box(selected.source, Color.YELLOW, 3)
@@ -122,6 +125,11 @@ func draw_selector_box(node: Node, color: Color, width: int) -> void:
 		draw_rect(node.get_global_rect(), color, false, width) 
 	if node is LinkUI:
 		draw_polyline(node.width_polygon(node.width + 4), color, width)
+
+func draw_player_data() -> void:
+	if current_connector == null:
+		return
+	draw_selector_box(playing, Color.WEB_PURPLE, 5)
 
 func get_compatible_connectors(connector: ConnectorUI) -> Array[ConnectorUI]:
 	return connector.state.get_compatible().map(func (c): return ui_connectors.get(c))

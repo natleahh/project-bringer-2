@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://crqgt3uk1l382"]
 
-[ext_resource type="Script" uid="uid://df7wr4h1vcw5i" path="res://Gig/Act/UI/viewer.gd" id="1_8mpr5"]
+[ext_resource type="Script" uid="uid://df7wr4h1vcw5i" path="res://Gig/Act/UI/Viewer and Controller/viewer.gd" id="1_8mpr5"]
 
 [node name="Viewer" type="Control" unique_id=1994703159]
 layout_mode = 3
