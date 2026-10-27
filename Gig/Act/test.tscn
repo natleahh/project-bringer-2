@@ -2,21 +2,41 @@
 
 [ext_resource type="Script" uid="uid://dwfmp00qum6c5" path="res://Gig/Act/test.gd" id="1_hvs4b"]
 [ext_resource type="Script" uid="uid://bpumcfbwmurpb" path="res://Gig/Act/State/act_state.gd" id="2_q28iy"]
-[ext_resource type="PackedScene" uid="uid://crqgt3uk1l382" path="res://Gig/Act/UI/viewer.tscn" id="3_b6gn4"]
+[ext_resource type="PackedScene" uid="uid://crqgt3uk1l382" path="res://Gig/Act/UI/Viewer and Controller/viewer.tscn" id="3_b6gn4"]
+[ext_resource type="Script" uid="uid://www5w76dkffb" path="res://Gig/Act/Player/act_player.gd" id="4_6bo2l"]
+[ext_resource type="PackedScene" uid="uid://dlmx4lwc7o4p4" path="res://Gig/Act/UI/DataPanel/data_dock.tscn" id="4_iq3cp"]
 
 [node name="Test" type="Node2D" unique_id=715091206]
 script = ExtResource("1_hvs4b")
 
 [node name="ActState" type="Node" parent="." unique_id=607017699]
+unique_name_in_owner = true
 script = ExtResource("2_q28iy")
 metadata/_custom_type_script = "uid://bpumcfbwmurpb"
 
+[node name="ActPlayer" type="Node" parent="." unique_id=2086745760 node_paths=PackedStringArray("state")]
+unique_name_in_owner = true
+script = ExtResource("4_6bo2l")
+state = NodePath("../ActState")
+wait_time = 5.0
+metadata/_custom_type_script = "uid://www5w76dkffb"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=374322204]
 
-[node name="Viewer" parent="CanvasLayer" unique_id=1994703159 node_paths=PackedStringArray("act") instance=ExtResource("3_b6gn4")]
+[node name="Viewer" parent="CanvasLayer" unique_id=1994703159 instance=ExtResource("3_b6gn4")]
+unique_name_in_owner = true
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-act = NodePath("../../ActState")
+
+[node name="DataDock" parent="CanvasLayer" unique_id=215042110 instance=ExtResource("4_iq3cp")]
+
+[connection signal="changed" from="ActState" to="." method="_on_act_state_changed"]
+[connection signal="new_bit" from="ActState" to="." method="_on_act_state_new_bit"]
+[connection signal="new_link" from="ActState" to="." method="_on_act_state_new_link"]
+[connection signal="create_link" from="CanvasLayer/Viewer" to="." method="_on_viewer_create_link"]
+[connection signal="play_connector" from="CanvasLayer/Viewer" to="." method="_on_viewer_play_connector"]
+[connection signal="toggle_link" from="CanvasLayer/Viewer" to="." method="_on_viewer_toggle_link"]
+[connection signal="dropped_bit" from="CanvasLayer/DataDock" to="." method="_on_data_dock_dropped_bit"]
