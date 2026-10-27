@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dlmx4lwc7o4p4"]
+
+[ext_resource type="Script" uid="uid://duy8h4lu471mi" path="res://Gig/Act/UI/DataPanel/data_dock.gd" id="1_0b644"]
+
+[node name="DataDock" type="Control" unique_id=215042110]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+script = ExtResource("1_0b644")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="." unique_id=1746837392]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.9
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="BitDataDisplay" type="HFlowContainer" parent="ScrollContainer" unique_id=515895163]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3

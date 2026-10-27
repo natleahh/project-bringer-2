@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dxwggvkb8t7q8"]
+
+[ext_resource type="Script" uid="uid://bfg7y5uwrft43" path="res://Gig/Act/UI/DataPanel/bit_data_ui.gd" id="1_q3cwi"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_ip667"]
+
+[node name="PanelContainer" type="PanelContainer" unique_id=101464944]
+offset_right = 84.0
+offset_bottom = 40.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+offset_transform_enabled = true
+script = ExtResource("1_q3cwi")
+metadata/_custom_type_script = "uid://bfg7y5uwrft43"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=154770056]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Icon" type="TextureRect" parent="HBoxContainer" unique_id=1543067334]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+texture = SubResource("PlaceholderTexture2D_ip667")
+stretch_mode = 4
