@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://dmvbesgutye0c"]
-
-[ext_resource type="Script" uid="uid://dwfmp00qum6c5" path="res://Gig/Act/UI/test.gd" id="1_hvs4b"]
-
-[node name="Test" type="Node2D" unique_id=715091206]
-script = ExtResource("1_hvs4b")

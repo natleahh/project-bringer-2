@@ -1,4 +1,4 @@
-class_name ActState extends Object
+class_name ActState extends Node
 
 signal new_bit(node: ActNode)
 signal new_link(node: ActLink)
@@ -58,6 +58,7 @@ func link_connectors(left: ActConnector, right: ActConnector) -> void:
 	left.updated.emit()
 	right.updated.emit()
 	
+	toggle_link(link)
 	new_link.emit(link)
 
 func unlink(link: ActLink) -> void:

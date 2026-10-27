@@ -1,4 +1,4 @@
-class_name Editor extends Node2D
+class_name Viewer extends Control
 
 const BIT_UI: PackedScene = preload("res://Gig/Act/UI/Elements/bit_ui.tscn")
 
@@ -19,14 +19,27 @@ class SelectionCycler:
 		source = _source
 		cycle = cycle_getter.call(_source)
 	
-	func next() -> Node:
+	func _cycle(forward: bool) -> Node:
 		if not cycle:
 			return
-		index += 1
+		index += 1 if forward else -1
 		index %= cycle.size()
 		return selected
 
-var act: ActState = ActState.new()
+	func next() -> Node:
+		return _cycle(true)
+
+	func previous() -> Node:
+		return _cycle(false)
+			
+
+@export var act: ActState
+@export var player: ActPlayer
+
+var playing_node: ActNode:
+	get: return player.connector.bit if player.connector else null
+var blocked_links: Array[ActLink]:
+	get: return player.options.map().bit if player.connector else null
 
 func _ready() -> void:
 	act.new_bit.connect(_on_new_bit)
@@ -81,11 +94,15 @@ func _process(_delta: float) -> void:
 func handle_input():
 	if selected == null:
 		return
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("act_viewer_select"):
 		handle_state_update(selected.source)
-	elif Input.is_action_just_pressed("ui_focus_next"):
+	elif Input.is_action_just_pressed("act_viewer_cycle_fwd"):
 		selected.next()
-
+	elif Input.is_action_just_pressed("act_view_cycle_back"):
+		selected.previous()
+	elif Input.is_action_just_pressed("act_view_play") and selected.source is ConnectorUI:
+		player.play_from_connector((selected.source as ConnectorUI).state)
+		
 func handle_state_update(node: Node):
 	if not  selected.selected:
 		return
@@ -97,14 +114,14 @@ func handle_state_update(node: Node):
 func _draw() -> void:
 	if selected == null:
 		return
-	draw_selector_box(selected.source)
-	draw_selector_box(selected.selected)
+	draw_selector_box(selected.source, Color.YELLOW, 3)
+	draw_selector_box(selected.selected, Color.YELLOW, 3)
 
-func draw_selector_box(node: Node) -> void:
+func draw_selector_box(node: Node, color: Color, width: int) -> void:
 	if node is BitUI or node is ConnectorUI:
-		draw_rect(node.get_global_rect(), Color("yellow"), false, 3) 
+		draw_rect(node.get_global_rect(), color, false, width) 
 	if node is LinkUI:
-		draw_polyline(node.width_polygon(node.width + 4), Color("yellow"), 3)
+		draw_polyline(node.width_polygon(node.width + 4), color, width)
 
 func get_compatible_connectors(connector: ConnectorUI) -> Array[ConnectorUI]:
 	return connector.state.get_compatible().map(func (c): return ui_connectors.get(c))

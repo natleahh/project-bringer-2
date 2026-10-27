@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://dmvbesgutye0c"]
+
+[ext_resource type="Script" uid="uid://dwfmp00qum6c5" path="res://Gig/Act/test.gd" id="1_hvs4b"]
+[ext_resource type="Script" uid="uid://bpumcfbwmurpb" path="res://Gig/Act/State/act_state.gd" id="2_q28iy"]
+[ext_resource type="PackedScene" uid="uid://crqgt3uk1l382" path="res://Gig/Act/UI/viewer.tscn" id="3_b6gn4"]
+
+[node name="Test" type="Node2D" unique_id=715091206]
+script = ExtResource("1_hvs4b")
+
+[node name="ActState" type="Node" parent="." unique_id=607017699]
+script = ExtResource("2_q28iy")
+metadata/_custom_type_script = "uid://bpumcfbwmurpb"
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=374322204]
+
+[node name="Viewer" parent="CanvasLayer" unique_id=1994703159 node_paths=PackedStringArray("act") instance=ExtResource("3_b6gn4")]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+act = NodePath("../../ActState")
