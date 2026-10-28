@@ -10,14 +10,19 @@ var position: Vector2:
 
 ## Connection State
 var _graph: ActState
+var _connection_fields: ActState.NodeFields:
+	get: return _graph.nodes[self]
 var connectors: Array[ActConnector]:
 	get:
-		return _graph.nodes[self].connectors
+		return _connection_fields.connectors
+var linked_connectors: Array[ActConnector]:
+	get: return connectors.filter(func (c: ActConnector): return c.link != null) 
+var active_connectors: Array[ActConnector]:
+	get: return linked_connectors.filter(func (c: ActConnector): return c.link.active)
 
 func _init(bit_data: Models.BitData, act: ActState) -> void:
 	_graph = act
 	data = bit_data
-	
 
 func get_bridges() -> Array[ActConnector]:
 	return connectors.filter(func (c: ActConnector): return c.partner != null)
