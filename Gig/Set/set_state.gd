@@ -7,29 +7,38 @@ var start: Variant = null
 
 signal added_bit(bit: SetBit)
 signal added_joke(joke: Array[int])
+signal score_update(update: Models.ComedyVector4)
+
+var _score: Models.ComedyVector4 = Models.ComedyVector4.new([0.0, 0.0, 0.0, 0.0])
+@export var score_each: Array[float]:
+	get: return _score._data.map(func (v): return float(v))
+@export var score_sum: float:
+	get: return score_each.reduce(func (a, b): return a + b, 0.0)
 
 class SetBit:
 	var bit: Models.BitData
 	var type: Models.ComedyType
+	
+	func _init(node: ActNode, connector: ActConnector) -> void:
+		bit = node.data
+		if connector != null:
+			type = connector.type
 
-func add_bit(bit: SetBit) -> void:
-	bits.append(bit)
-	added_bit.emit(bit)
+func add_bit(node: ActNode, connector: ActConnector) -> void:
+	bits.append(
+		SetState.SetBit.new(node, connector)
+	)
 
-func add_joke(joke: Array[int]) -> void:
-	jokes.append(joke)
-	added_joke.emit(joke)
-
-func set_up(bit: SetBit) -> void:
-	start = bits.size()
-	add_bit(bit)
-
-func drop() -> void:
-	start = null
-
-func pay_off(bit: SetBit) -> void:
-	if start == null:
-		return 
-	add_bit(bit)
-	add_joke(bits.slice(start, bits.size()))
+func score(audience_preference: Models.ComedyVector4) -> void:
+	var exponents = range(4).map(
+		func (i): return 5 if bits[-1].type == null or bits[-1].type == Models.ComedyType.values()[i] else 0
+	)
+	
+	var _score_update = audience_preference.add(1).power(exponents).add(-1)
+	_score = _score.add(_score_update)
+	score_update.emit(_score_update)
+	
+	
+	
+	
 	
