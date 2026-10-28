@@ -16,14 +16,14 @@ var bit: ActNode:
 var link: ActLink:
 	get: return _state_fields.link
 var partner: ActConnector:
-	get: return null if link == null else link.connectors.filter(_is_self)[0]
+	get: return null if link == null else link.connectors.filter(_is_other)[0]
 
 func _init(connector_data: Models.ConnectorData, act: ActState) -> void:
 	_connection_state = act
 	data = connector_data
 
-func _is_self(connector: ActConnector) -> bool:
-	return connector == self
+func _is_other(connector: ActConnector) -> bool:
+	return connector != self
 
 func is_compatible(connector: ActConnector) -> bool:
 	if self == connector:
