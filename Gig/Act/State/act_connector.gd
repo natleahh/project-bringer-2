@@ -28,23 +28,35 @@ func _is_other(connector: ActConnector) -> bool:
 func is_compatible(connector: ActConnector) -> bool:
 	if self == connector:
 		return false
-	if type !=  connector.type:
+	if type != connector.type:
 		return false
 	if bit == connector.bit:
 		return false
-	if bit in connector.bit.get_neighbours():
-		return false
+	#if bit in connector.bit.get_neighbours():
+		#return false 
 	return true
- 
+
+func already_connected(node: ActNode) -> Array[ActConnector]:
+	var partners = node.linked_connectors.map( func (c): return c.partner)
+	return partners.filter(func (c): return c.bit == node and c != self)
+
+func get_connected_bit() -> ActNode:
+	if link == null or not link.active:
+		return
+	return partner.bit
+
+func get_compatible_connectors() -> ActConnector:
+	return 
+
 func get_compatible() -> Array[ActConnector]:
 	return _connection_state.connectors.keys().filter(is_compatible)
 
-func connector_path(connector: ActConnector = null, source: ActConnector = null, chain: Array[ActConnector] = []) -> Array[ActConnector]:
+func connector_path(connector: ActConnector = null, source: ActConnector = null, chain: Array = []) -> Array:
 	if connector == null and source == null:
 		return connector_path(self, self, chain)
 	if source in chain:
 		return chain
-	var next: Array[ActConnector] = connector.bit.get_bridges().filter(func (c: ActConnector): return c.link.active and c != connector)
+	var next = connector.bit.get_bridges().filter(func (c: ActConnector): return c.link.active and c != connector)
 	if next.size() != 1:
 		return chain
 	return connector_path(next[0].partner, source, chain + [connector])
