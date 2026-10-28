@@ -5,6 +5,9 @@
 [ext_resource type="PackedScene" uid="uid://crqgt3uk1l382" path="res://Gig/Act/UI/Viewer and Controller/viewer.tscn" id="3_b6gn4"]
 [ext_resource type="Script" uid="uid://www5w76dkffb" path="res://Gig/Act/Player/act_player.gd" id="4_6bo2l"]
 [ext_resource type="PackedScene" uid="uid://dlmx4lwc7o4p4" path="res://Gig/Act/UI/DataPanel/data_dock.tscn" id="4_iq3cp"]
+[ext_resource type="Script" uid="uid://xamobtjisfv5" path="res://Gig/Set/set_state.gd" id="6_yhk2x"]
+[ext_resource type="Script" uid="uid://cy1a2t3lmoms6" path="res://Gig/Act/score_display.gd" id="7_jyual"]
+[ext_resource type="Script" uid="uid://bto12oy747q5q" path="res://Gig/Audience/laughter_screen.gd" id="8_jyual"]
 
 [node name="Test" type="Node2D" unique_id=715091206]
 script = ExtResource("1_hvs4b")
@@ -21,6 +24,11 @@ state = NodePath("../ActState")
 wait_time = 5.0
 metadata/_custom_type_script = "uid://www5w76dkffb"
 
+[node name="SetState" type="Node" parent="." unique_id=106860257]
+unique_name_in_owner = true
+script = ExtResource("6_yhk2x")
+metadata/_custom_type_script = "uid://xamobtjisfv5"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=374322204]
 
 [node name="Viewer" parent="CanvasLayer" unique_id=1994703159 instance=ExtResource("3_b6gn4")]
@@ -33,10 +41,54 @@ grow_vertical = 2
 
 [node name="DataDock" parent="CanvasLayer" unique_id=215042110 instance=ExtResource("4_iq3cp")]
 
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=2124603017]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 40.0
+grow_horizontal = 2
+
+[node name="PlayerDisplay" type="TextureRect" parent="CanvasLayer/VBoxContainer" unique_id=1021035292]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="CanvasLayer/VBoxContainer" unique_id=1929285802]
+unique_name_in_owner = true
+layout_mode = 2
+max_value = 1.0
+
+[node name="ScoreDisplay" type="HBoxContainer" parent="CanvasLayer/VBoxContainer" unique_id=1313711958]
+unique_name_in_owner = true
+layout_mode = 2
+script = ExtResource("7_jyual")
+
+[node name="TotalScore" type="Label" parent="CanvasLayer/VBoxContainer/ScoreDisplay" unique_id=849800232]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="AudienceUI" type="HFlowContainer" parent="CanvasLayer" unique_id=728839643]
+unique_name_in_owner = true
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -148.0
+grow_horizontal = 2
+grow_vertical = 0
+mouse_filter = 2
+mouse_behavior_recursive = 1
+script = ExtResource("8_jyual")
+metadata/_custom_type_script = "uid://bto12oy747q5q"
+
 [connection signal="changed" from="ActState" to="." method="_on_act_state_changed"]
 [connection signal="new_bit" from="ActState" to="." method="_on_act_state_new_bit"]
 [connection signal="new_link" from="ActState" to="." method="_on_act_state_new_link"]
+[connection signal="tock" from="ActPlayer" to="." method="_on_act_player_tock"]
+[connection signal="added_bit" from="SetState" to="." method="_on_set_state_added_bit"]
+[connection signal="score_update" from="SetState" to="." method="_on_set_state_score_update"]
 [connection signal="create_link" from="CanvasLayer/Viewer" to="." method="_on_viewer_create_link"]
-[connection signal="play_connector" from="CanvasLayer/Viewer" to="." method="_on_viewer_play_connector"]
+[connection signal="play_bit" from="CanvasLayer/Viewer" to="." method="_on_viewer_play_bit"]
 [connection signal="toggle_link" from="CanvasLayer/Viewer" to="." method="_on_viewer_toggle_link"]
 [connection signal="dropped_bit" from="CanvasLayer/DataDock" to="." method="_on_data_dock_dropped_bit"]
