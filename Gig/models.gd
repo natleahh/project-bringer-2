@@ -125,6 +125,12 @@ class ComedyVector4:
 			return ComedyVector4._apply_each(callable, _data, variant)
 		else:
 			return ComedyVector4.new(_data.map(func (each): return callable.call(each, variant)))
+	
+	func add(other: Variant) -> ComedyVector4:
+		return _apply(func (a, b): return a + b, other)
+	
+	func power(exponent: Variant) -> ComedyVector4:
+		return _apply(func (base, _exp): return pow(base, _exp), exponent)
 
 class BitData extends Resource:
 	var texture: Texture2D = PlaceholderTexture2D.new()
@@ -140,6 +146,8 @@ class BitData extends Resource:
 			range(randi_range(3, 4)).map(func (_i): return ConnectorData.get_random()),
 			TEXTURES[randi() % TEXTURES.size()]
 		)
+		
+		
 
 class ConnectorData extends Resource:
 	var type: ComedyType = ComedyType.Witty
