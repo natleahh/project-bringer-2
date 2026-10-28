@@ -8,6 +8,11 @@ anchors_preset = 0
 script = ExtResource("1_8mpr5")
 metadata/_custom_type_script = "uid://df7wr4h1vcw5i"
 
+[node name="Playing" type="TextureRect" parent="." unique_id=1501025222]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
 [node name="Connections" type="CanvasLayer" parent="." unique_id=1791215440]
 unique_name_in_owner = true
 

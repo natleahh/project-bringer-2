@@ -1,6 +1,6 @@
 class_name Viewer extends Control
 
-signal play_connector(connector: ActConnector)
+signal play_bit(bit: ActNode)
 signal create_link(left: ActConnector, right: ActConnector)
 signal toggle_link(link: ActLink)
 
@@ -37,9 +37,10 @@ class SelectionCycler:
 		return _cycle(false)
 
 var current_connector: ActConnector
+var current_node: ActNode
 var playing: BitUI:
-	get: return null if current_connector == null else ui_bits.get(current_connector.bit)
-var path: Array[BitUI] = []
+	get: return ui_bits.get(current_node)
+var path: Array = []
 
 	
 func add_bit(act_bit: ActNode) -> void:
@@ -91,13 +92,15 @@ func handle_input():
 		selected.next()
 	elif Input.is_action_just_pressed("act_view_cycle_back"):
 		selected.previous()
-	elif Input.is_action_just_pressed("act_view_play") and selected.source is ConnectorUI:
-		play_connector.emit((selected.source as ConnectorUI).state)
+	elif Input.is_action_just_pressed("act_view_play") and selected.source is BitUI:
+		var _node := (selected.source as BitUI).state
+		current_node = _node
+		play_bit.emit(_node)
 	else:
 		return
 
 func handle_state_update(node: Node):
-	if not  selected.selected:
+	if not selected.selected:
 		return
 	if node is ConnectorUI:
 		create_link.emit(node.state, selected.selected.state)
