@@ -12,10 +12,12 @@ Label/colors/font_color = Color(0.13333334, 0.1254902, 0.09411765, 1)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gajms"]
 size = Vector2(148, 96)
 
-[node name="BitUi" type="RigidBody2D" unique_id=537460357]
+[node name="BitUi" type="RigidBody2D" unique_id=1192358614]
 gravity_scale = 0.0
+inertia = 1000.0
 lock_rotation = true
 script = ExtResource("1_fm3mw")
+metadata/_custom_type_script = "uid://bqorrfudet55n"
 metadata/_edit_group_ = true
 
 [node name="NodeUI" type="TextureButton" parent="." unique_id=1044495892]

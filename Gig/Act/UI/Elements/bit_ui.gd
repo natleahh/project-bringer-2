@@ -14,6 +14,7 @@ func get_global_rect() -> Rect2:
 	return %NodeUI.get_global_rect()
 
 func _ready() -> void:
+	%Icon.texture = state.data.texture
 	for connector in state.connectors:
 		var connector_ui: ConnectorUI = CONNECTOR_UI.instantiate()
 		connector_ui.state = connector
@@ -27,9 +28,11 @@ func _ready() -> void:
 	# Collision
 	%NodeUI.button_down.connect(func (): freeze = true)
 	%NodeUI.button_up.connect(func (): freeze = false)
-	body_entered.connect(func (): moved.emit())
+	body_entered.connect(_on_collision)
 	shape.size = %NodeUI.get_rect().size
-	
+
+func _on_collision(_body: Node) -> void:
+	moved.emit()
 
 ## Movement Handling
 func _notification(what: int) -> void:
