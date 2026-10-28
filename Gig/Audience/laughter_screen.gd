@@ -1,4 +1,4 @@
-class_name LaughScreen extends HFlowContainer
+class_name AudienceUI extends HFlowContainer
 
 const LAUGHTER_SPOT = preload("res://Gig/Audience/laughter_spot.tscn")
 
