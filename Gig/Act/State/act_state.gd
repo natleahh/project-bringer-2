@@ -46,10 +46,12 @@ func add_bit(bit_data: Models.BitData) -> void:
 	
 
 func link_connectors(left: ActConnector, right: ActConnector) -> void:
-	# Remove existing links
+	# check existing links between nodes
 	unlink(left.link)
 	unlink(right.link)
-	
+	unlink_nodes(left, right.bit)
+	unlink_nodes(right, left.bit)
+		
 	# Create new link
 	var link = ActLink.new(self)
 	links[link] = LinkFields.new(left, right)
@@ -64,6 +66,11 @@ func link_connectors(left: ActConnector, right: ActConnector) -> void:
 	toggle_link(link)
 	new_link.emit(link)
 	changed.emit()
+
+func unlink_nodes(connector: ActConnector, node: ActNode) -> void:
+	for c in connector.already_connected(node):
+		unlink(c.link)
+
 
 func unlink(link: ActLink) -> void:
 	# Check if connected
