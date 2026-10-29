@@ -40,7 +40,7 @@ func _on_act_player_tock() -> void:
 	set_state.score(%AudienceUI.state.preferences)
 
 func _on_set_state_score_update(_update: Models.ComedyVector4) -> void:
-	%TotalScore.text = str(set_state.score_sum)
+	%TotalScore.text = "%.2f" % (set_state.score_sum)
 	%ScoreDisplay.update_score(set_state._score)
 	%AudienceUI.laugh(_update)
 

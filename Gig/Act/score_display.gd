@@ -13,4 +13,4 @@ class _L extends Label:
 
 func update_score(score: Models.ComedyVector4) -> void:
 	for i in 4:
-		labels[i].text = str(score._data[i])
+		labels[i].text = "%.2f" % score._data[i]
