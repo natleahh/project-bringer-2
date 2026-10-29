@@ -136,15 +136,18 @@ class BitData extends Resource:
 	var texture: Texture2D = PlaceholderTexture2D.new()
 	var position: Vector2 = Vector2.ZERO
 	var connectors: Array
+	var call_back: int
 	
-	func _init(_connectors: Array, _texture: Texture2D) -> void:
+	func _init(_connectors: Array, _texture: Texture2D, _callback: int) -> void:
 		connectors = _connectors 
 		texture = _texture
+		call_back = _callback
 	
 	static func get_random() -> BitData:
 		return BitData.new(
 			range(randi_range(3, 4)).map(func (_i): return ConnectorData.get_random()),
-			TEXTURES[randi() % TEXTURES.size()]
+			TEXTURES[randi() % TEXTURES.size()],
+			randi() % 3
 		)
 		
 		

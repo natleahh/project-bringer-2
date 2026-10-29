@@ -29,14 +29,27 @@ func add_bit(node: ActNode, connector: ActConnector) -> void:
 		SetState.SetBit.new(node, connector)
 	)
 
-func score(audience_preference: Models.ComedyVector4) -> void:
+func score(audience_preference: Models.ComedyVector4, index: int = -1) -> void:
+	if -index > bits.size():
+		return
+		
 	var exponents = range(4).map(
-		func (i): return 5 if bits[-1].type == null or bits[-1].type == Models.ComedyType.values()[i] else 0
+		func (i): return 5 if bits[index].type == null or bits[index].type == Models.ComedyType.values()[i] else 0
 	)
 	
 	var _score_update = audience_preference.add(1).power(exponents).add(-1)
 	_score = _score.add(_score_update)
 	score_update.emit(_score_update)
+	
+	if bits[index].bit.call_back != 0:
+		var callback_index = index - bits[index].bit.call_back
+		score(audience_preference, callback_index)
+
+		
+		
+		
+		
+
 	
 	
 	
