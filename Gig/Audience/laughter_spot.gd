@@ -5,3 +5,6 @@ var emitting: bool:
 	
 var color: Color = Color("white"):
 	set(b): %GPUParticles2D.modulate = b
+
+var amount: int:
+	set(i): %GPUParticles2D.amount = i

@@ -24,13 +24,24 @@ func _ready() -> void:
 
 
 func laugh(score: Models.ComedyVector4) -> void:
-	state.reveal(score)
+	for i in 4:
+		_laugh_helper(score._data[i], (i as Models.ComedyType))
 
-	for i in _get_shuffled_memebers().slice(0, int(total * randf())):
+func _laugh_helper(score: float, type: Models.ComedyType) -> void:
+	if score == 0:
+		return
+	state.reveal(score, type)
+	var shuffled = _get_shuffled_memebers(type)
+	var slice = shuffled.slice(0, randi() % shuffled.size())
+	var laughs_per_member = score / slice.size()
+	for i in slice:
+		laughter_spots[i].amount = max(int(laughs_per_member), 1)
 		laughter_spots[i].emitting = true
 
-func _get_shuffled_memebers() -> Array:
-	var temp: Array = range(total)
+
+
+func _get_shuffled_memebers(type: Models.ComedyType) -> Array:
+	var temp: Array = range(total).filter(func (i): return state.members[i] == type)
 	temp.shuffle()
 	return temp
 

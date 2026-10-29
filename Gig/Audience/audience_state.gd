@@ -42,18 +42,16 @@ func _init(_total: int) -> void:
 	members.shuffle()
 	pass
 	
-func reveal(score: Models.ComedyVector4) -> void:
-	for type in Models.ComedyType.values():
-		_reveal_helper(score._get_by_comedy_type(type), type)
 
-func _reveal_helper(score: float, type: Models.ComedyType):
+func reveal(score: float, type: Models.ComedyType):
 	if score <= 0:
 		return
 	var available = range(members.size()).filter(_is_available.bind(type))
 	if not available:
 		return
-	known.append(available.pick_random())
-	revealed_audience.emit(known[-1])
+	for _i in max(int(score / 10), available.size()):
+		known.append(available.pick_random())
+		revealed_audience.emit(known[-1])
 
 func _is_available(index: int, type: Models.ComedyType) -> bool:
 	return index not in known and members[index] == type
