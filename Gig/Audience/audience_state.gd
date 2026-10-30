@@ -2,6 +2,8 @@ class_name AudienceState extends Object
 
 signal revealed_audience(index: int)
 
+const PREFERENCE_BASE: int = 2
+
 var members: Array[Models.ComedyType]
 var total: int:
 	get:
@@ -20,7 +22,8 @@ var preferences: Models.ComedyVector4:
 var known: Array[int] = []
 
 static func random_preference_array() -> Array[float]:
-	var data = range(4).map(func (_i): return randf())
+	var data = range(4).map(func (i): return randi_range(0, PREFERENCE_BASE + i))
+	data.shuffle()
 	var _total = float(data.reduce(func (a, b): return a + b, 0))
 	return data.map(func (a): return float(a) / _total)
 
