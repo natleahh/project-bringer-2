@@ -1,6 +1,7 @@
 class_name Viewer extends Control
 
 signal play_bit(bit: ActNode)
+signal progress_player
 signal create_link(left: ActConnector, right: ActConnector)
 signal toggle_link(link: ActLink)
 
@@ -94,8 +95,11 @@ func handle_input():
 		selected.previous()
 	elif Input.is_action_just_pressed("act_view_play") and selected.source is BitUI:
 		var _node := (selected.source as BitUI).state
-		current_node = _node
-		play_bit.emit(_node)
+		if _node == current_node:
+			progress_player.emit()
+		else:
+			current_node = _node
+			play_bit.emit(_node)
 	else:
 		return
 
@@ -130,7 +134,7 @@ func draw_selector_box(node: Node, color: Color, width: int) -> void:
 		draw_polyline(node.width_polygon(node.width + 4), color, width)
 
 func draw_player_data() -> void:
-	if current_connector == null:
+	if current_node == null:
 		return
 	draw_selector_box(playing, Color.WEB_PURPLE, 5)
 

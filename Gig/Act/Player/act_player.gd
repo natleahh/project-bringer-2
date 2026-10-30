@@ -6,34 +6,24 @@ signal tock
 @export var play_display: Texture2D:
 	get: return null if node == null else node.data.texture
 
-
 var node: ActNode
 var connector: ActConnector
 var next: ActConnector
 
-var timer: Timer = Timer.new()
-@export var wait_time: float:
-	set(s): timer.wait_time = s
-	get: return timer.wait_time
-@export var progress: float:
-	get: return timer.time_left / timer.wait_time
-
-func _ready() -> void:
-	add_child(timer)
-	timer.timeout.connect(tick)
-	timer.one_shot = true
-	timer.autostart = false
-
-func play(_node: ActNode) -> void:
+func play(_node: ActNode, is_scoring: bool) -> void:
+	if is_scoring:
+		return
 	node = _node
-	timer.start()
+	#timer.start()
 
-func tick() -> void:
+func play_next(is_scoring: bool) -> void:
+	if is_scoring:
+		return
 	next = get_next()
-	if not timer.is_stopped() or next == null:
+	if next == null:
 		return
 	connector = next.partner
-	play(connector.bit)
+	play(connector.bit, is_scoring)
 	tock.emit()
  
 func get_next() -> ActConnector:
