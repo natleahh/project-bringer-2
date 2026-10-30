@@ -33,27 +33,36 @@ class SetBit:
 
 	var _data: Models.BitData
 	var type: Models.ComedyType
-	var call_back_effect: Models.CallBackEffect:
-		get: return _data.effects.call_back
-	var set_up_effect: Models.SetUpEffect:
-		get: return _data.effects.set_up
 	var effects: Array[Models.ScoreEffect]:
-		get: return [call_back_effect, set_up_effect].filter(func (e): return e != null)
+		get: return _data.effects
 	
 	func _init(node: ActNode, connector: ActConnector) -> void:
 		_data = node.data
 		if connector != null:
 			type = connector.type
-	
-	func call_back(_bits, index) -> int:
-		return _data.effects.call_back.get_call_back(_bits, index)
-	
-	func get_set_up(_bits: Array[SetState.SetBit], joke: Array[SetState.ScoreContext]) -> Array[int]:
-		if not set_up_effect: return [] as Array[int]
-		return _data.effects.set_up.get_set_up(_bits, joke)
+
+	func call_back(_bits, index):
+		for effect in effects:
+			if effect is not Models.CallBackEffect:
+				continue
+			match effect.get_call_back(_bits, index):
+				0: pass
+				var _index: return ScoreContext.new(effect, index, _index)
+
+	func get_set_up(index: int, _bits: Array[SetState.SetBit], joke: Array[SetState.ScoreContext]) -> Array:
+		for effect in effects:
+			if effect is not Models.SetUpEffect:
+				continue
+			match effect.get_set_up(_bits, joke):
+				[]: pass
+				var _indexes: return _indexes.map(
+					func (i): return ScoreContext.new(effect, i, index)
+				)
+		return []
+
 
 	func get_exponent(power: float = 0) -> Models.ComedyVector4:
-		return Models.ComedyVector4.get_exponent(7.0 + power, [type])
+		return Models.ComedyVector4.get_exponent(10.0 + power, [type])
 
 	func get_base_score(preference: Models.ComedyVector4, power: float = 0) -> Models.ComedyVector4:
 		var exponent = get_exponent(power)
@@ -77,16 +86,16 @@ func build_joke(index: int = -1, joke: Array[ScoreContext] = []) -> Array[ScoreC
 		joke.append(
 			ScoreContext.new(Models.OpenerEffect.new(), 0, -1)
 		)
+	
 	var current_bit = bits[index]
-	var set_up: Array = current_bit.get_set_up(bits, joke)
-	joke.append_array(
-		set_up.map(func (i): return ScoreContext.new(current_bit.set_up_effect, i, index))
-	)
+	
+	joke.append_array(current_bit.get_set_up(index, bits, joke))
 	var is_retrigger = (index == -1) or (index not in joke.map(func (sc: ScoreContext): return sc.target))
-
+	if is_retrigger:
+		return build_joke(index - 1, joke)
 	match current_bit.call_back(bits, index):
-		null: pass
-		var cbi when cbi != 0 and is_retrigger: joke.append(
-			ScoreContext.new(current_bit._data.effects.call_back, index, cbi)
-		)
+		null: 
+			pass
+		var score_context:
+			joke.append(score_context)
 	return build_joke(index - 1, joke)

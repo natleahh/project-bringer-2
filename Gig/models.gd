@@ -137,28 +137,36 @@ class ComedyVector4:
 	func power(exponent: Variant) -> ComedyVector4:
 		return _apply(func (base, _exp): return pow(base, _exp), exponent)
 
-class ScoreEffects extends Resource:
-	var call_back: CallBackEffect
-	var set_up: SetUpEffect
-	
-	static func randomise() -> ScoreEffects:
-		var se := ScoreEffects.new()
-		se.call_back = CallBackEffect.randomise()
-		se.set_up = SetUpEffect.randomise()
-		
-		return se
-
 @abstract
 class ScoreEffect extends Resource:
-	var triggers: int = 0
-	var threshold: int = 0
+	
+	signal updated
+	var _triggers: int = 0
+	var triggers: int:
+		set(i): 
+			_triggers = i
+			updated.emit()
+		get: return _triggers
+	var threshold: int = 3
+	var remaining: int:
+		get: return max(0, threshold - triggers)
+	var mystery_text: String:
+		get: return "%s (revealed in %s triggers)" % ["?".repeat(10), remaining]
 	var text: String: 
-		get: return "[color=black]%s[/color]" % [get_format_text()]
+		get: return "[color=black]%s[/color]" % [get_format_text() if remaining == 0 else mystery_text]
 	var power: float: get = _power
+	
 	
 	@abstract func get_format_text() -> String
 	
 	@abstract func _power() -> float
+	
+	static func randomise_array() -> Array:
+		var effects = []
+		for i in range(3):
+			effects.append(CallBackEffect.randomise() if randi() % 2 else SetUpEffect.randomise())
+			effects[-1].threshold = 0 if i == 0 else randi_range(0, 2)
+		return effects
 
 class OpenerEffect extends ScoreEffect:
 	
@@ -234,9 +242,9 @@ class BitData extends Resource:
 	var texture: Texture2D = PlaceholderTexture2D.new()
 	var position: Vector2 = Vector2.ZERO
 	var connectors: Array
-	var effects: ScoreEffects
+	var effects: Array
 
-	func _init(_connectors: Array, _texture: Texture2D, _effects: ScoreEffects) -> void:
+	func _init(_connectors: Array, _texture: Texture2D, _effects: Array) -> void:
 		connectors = _connectors 
 		texture = _texture
 		effects = _effects
@@ -245,7 +253,7 @@ class BitData extends Resource:
 		return BitData.new(
 			range(randi_range(3, 4)).map(func (_i): return ConnectorData.get_random()),
 			TEXTURES[randi() % TEXTURES.size()],
-			ScoreEffects.randomise()
+			ScoreEffect.randomise_array()
 		)
 
 

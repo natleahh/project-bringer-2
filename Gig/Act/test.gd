@@ -22,7 +22,6 @@ func update_preview() -> void:
 
 func _on_act_state_changed() -> void:
 	update_preview()
-
 	#viewer.update_connector_path()ath()
 
 func _on_act_state_new_bit(node: ActNode) -> void:

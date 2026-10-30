@@ -22,7 +22,8 @@ func _ready() -> void:
 		ui_connectors.append(connector_ui)
 		%ConnectorsUI.add_child(connector_ui)
 	
-	for effect in [state.data.effects.call_back, state.data.effects.set_up].filter(func (e): return e != null):
+	for effect in state.data.effects:
+		effect.updated.connect(refresh_state)
 		var effect_ui = RichTextLabel.new()
 		effect_ui.bbcode_enabled = true
 		effect_ui.text = effect.text

@@ -10,7 +10,7 @@ func _ready() -> void:
 		bit_data_ui.data = Models.BitData.get_random()
 		%BitDataDisplay.add_child(bit_data_ui)
 		var effects = bit_data_ui.data.effects
-		tooltip_text = "\n".join([effects.call_back, effects.set_up].filter(func (e): return e != null).map(func (e): return e.text))
+		tooltip_text = "\n".join(bit_data_ui.data.effects.map(func (e): return e.text))
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	return data is BitDataUI
