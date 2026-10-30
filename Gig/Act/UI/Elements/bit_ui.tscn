@@ -5,9 +5,9 @@
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_5jkfg"]
 
-[sub_resource type="Theme" id="Theme_mfe1m"]
-default_font_size = 10
-Label/colors/font_color = Color(0.13333334, 0.1254902, 0.09411765, 1)
+[sub_resource type="Theme" id="Theme_pp8ei"]
+Label/colors/font_color = Color(0, 0, 0, 1)
+RichTextLabel/font_sizes/normal_font_size = 8
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gajms"]
 size = Vector2(148, 96)
@@ -77,23 +77,12 @@ size_flags_vertical = 0
 mouse_filter = 2
 texture = SubResource("PlaceholderTexture2D_5jkfg")
 
-[node name="Effect Text" type="VBoxContainer" parent="NodeUI/HBoxContainer" unique_id=381189214]
+[node name="EffectText" type="VBoxContainer" parent="NodeUI/HBoxContainer" unique_id=381189214]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 2
-theme = SubResource("Theme_mfe1m")
-
-[node name="Label" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=293003219]
-layout_mode = 2
-text = "Effect one"
-
-[node name="Label2" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=685473387]
-layout_mode = 2
-text = "????"
-
-[node name="Label3" type="Label" parent="NodeUI/HBoxContainer/Effect Text" unique_id=511791326]
-layout_mode = 2
-text = "????"
+theme = SubResource("Theme_pp8ei")
 
 [node name="Collision" type="CollisionShape2D" parent="." unique_id=500918484]
 unique_name_in_owner = true

@@ -4,11 +4,12 @@ const CONNECTOR_UI: PackedScene = preload("res://Gig/Act/UI/Elements/connector_u
 
 signal moved
 
-var state: ActNode
+var state: ActNode 
 var shape: RectangleShape2D:
 	get: return %Collision.shape
 
 var ui_connectors: Array[ConnectorUI] = []
+var ui_effects: Array[Label] = []
 
 func get_global_rect() -> Rect2:
 	return %NodeUI.get_global_rect()
@@ -20,6 +21,14 @@ func _ready() -> void:
 		connector_ui.state = connector
 		ui_connectors.append(connector_ui)
 		%ConnectorsUI.add_child(connector_ui)
+	
+	for effect in [state.data.effects.call_back, state.data.effects.set_up].filter(func (e): return e != null):
+		var effect_ui = RichTextLabel.new()
+		effect_ui.bbcode_enabled = true
+		effect_ui.text = effect.text
+		effect_ui.fit_content = true
+		effect_ui.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		%EffectText.add_child(effect_ui)
 	
 	# Input func
 	%NodeUI.mouse_entered.connect(func (): mouse_entered.emit())
