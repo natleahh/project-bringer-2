@@ -7,7 +7,7 @@
 
 [sub_resource type="Theme" id="Theme_pp8ei"]
 Label/colors/font_color = Color(0, 0, 0, 1)
-RichTextLabel/font_sizes/normal_font_size = 8
+RichTextLabel/font_sizes/normal_font_size = 6
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_gajms"]
 size = Vector2(148, 96)
