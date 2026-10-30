@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://cwhtwfg24bcte"]
+
+[ext_resource type="Texture2D" uid="uid://bays11gwx26yj" path="res://assets/free-emojis-pixelart/emojis-x1-32x32/E1.png" id="1_14rkr"]
+[ext_resource type="Script" uid="uid://dlvvy354tlfp0" path="res://Gig/Set/joke_bit_ui.gd" id="2_2wy3t"]
+
+[node name="TextureRect4" type="TextureRect" unique_id=131453165]
+texture = ExtResource("1_14rkr")
+stretch_mode = 5
+script = ExtResource("2_2wy3t")

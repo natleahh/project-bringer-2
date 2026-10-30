@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://dtqknvwq41e0q"]
+
+[ext_resource type="Script" uid="uid://cehuqsnhcw41p" path="res://Gig/Set/set_ui.gd" id="1_tpwm0"]
+[ext_resource type="Script" uid="uid://bto12oy747q5q" path="res://Gig/Audience/laughter_screen.gd" id="3_shl2u"]
+[ext_resource type="Script" uid="uid://b6mg7mw8k432i" path="res://Gig/Set/score_bar.gd" id="4_ue3xq"]
+
+[node name="SetUI" type="Control" unique_id=579640453]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tpwm0")
+
+[node name="Timer" type="Timer" parent="." unique_id=1234493151]
+unique_name_in_owner = true
+
+[node name="JokeDisplay" type="HFlowContainer" parent="." unique_id=1319676465]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -226.0
+offset_right = 226.0
+offset_bottom = 36.0
+grow_horizontal = 2
+alignment = 1
+
+[node name="SetDisplay" type="VBoxContainer" parent="." unique_id=1687279553]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -100.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="AudienceUI" type="HFlowContainer" parent="." unique_id=606537572]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -309.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 8
+script = ExtResource("3_shl2u")
+metadata/_custom_type_script = "uid://bto12oy747q5q"
+
+[node name="ScoreBar" type="VBoxContainer" parent="." unique_id=1035138709]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 46.0
+grow_vertical = 2
+mouse_filter = 2
+alignment = 2
+script = ExtResource("4_ue3xq")
+metadata/_custom_type_script = "uid://b6mg7mw8k432i"
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

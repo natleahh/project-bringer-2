@@ -126,31 +126,128 @@ class ComedyVector4:
 		else:
 			return ComedyVector4.new(_data.map(func (each): return callable.call(each, variant)))
 	
+	static func get_exponent(num: float, types: Array[ComedyType]) -> ComedyVector4:
+		var e = ComedyVector4.new([1.0, 1.0, 1.0, 1.0])
+		types.map(func (t): e._set_by_comedy_type(t, num))
+		return e
+	
 	func add(other: Variant) -> ComedyVector4:
 		return _apply(func (a, b): return a + b, other)
 	
 	func power(exponent: Variant) -> ComedyVector4:
 		return _apply(func (base, _exp): return pow(base, _exp), exponent)
 
+class ScoreEffects extends Resource:
+	var call_back: CallBackEffect
+	var set_up: SetUpEffect
+	
+	static func randomise() -> ScoreEffects:
+		var se := ScoreEffects.new()
+		se.call_back = CallBackEffect.randomise()
+		se.set_up = SetUpEffect.randomise()
+		
+		return se
+
+@abstract
+class ScoreEffect extends Resource:
+	var triggers: int = 0
+	var threshold: int = 0
+	var text: String: 
+		get: return "[color=black]%s[/color]" % [get_format_text()]
+	var power: float: get = _power
+	
+	@abstract func get_format_text() -> String
+	
+	@abstract func _power() -> float
+
+class OpenerEffect extends ScoreEffect:
+	
+	func _power() -> float:
+		return 1.0
+	
+	func get_format_text() -> String:
+		return "The Bit Opener"
+
+class CallBackEffect extends ScoreEffect:
+	var type: ComedyType
+	var num: int
+
+	func _init(_type: ComedyType, _num: int) -> void:
+		type = _type
+		num = _num
+	
+	func _power() -> float:
+		return float(num)
+	
+	func get_format_text() -> String:
+		if type == null:
+			return "Triggers any bit %s places this bit" % [num]
+		else:
+			return "Triggers a %s bit that is %s places before this bit" % [Models.get_formatted_comedy_type_name(type), num]
+
+	func get_call_back(bits: Array[SetState.SetBit], index: int) -> int:
+		var cb_index = index - num
+		if abs(cb_index) > bits.size():
+			return 0
+		elif bits[cb_index].type == type:
+			triggers += 1
+			return cb_index
+		else:
+			return 0
+
+	static func randomise() -> CallBackEffect:
+		return CallBackEffect.new(ComedyType.values()[randi() % 4], randi_range(1, 3))
+
+class SetUpEffect extends ScoreEffect:
+	var type: ComedyType
+	var exact: bool
+	var count: int
+	
+	func _init(_type: ComedyType, _exact: int, _count: int) -> void:
+		type = _type
+		exact = _exact
+		count = _count
+	
+	func _power() -> float:
+		return float(count)
+
+	func get_format_text() -> String:
+		var cond: StringName
+		if exact:
+			cond = "if exactly"
+		else:
+			cond = "at least"
+		var key = Models.get_formatted_comedy_type_name(type)
+		return "Triggers this bit if %s %s %s bits are ahead of it" % [cond, count, key]
+	
+	func get_set_up(bits: Array[SetState.SetBit], joke: Array[SetState.ScoreContext]) -> Array[int]:
+		var matching = joke.filter(func (sc: SetState.ScoreContext): return bits[sc.target].type == type)
+		if (matching.size() == count and exact) or (matching.size() >= count and not exact):
+			count += 1
+			return matching.map(func (sc: SetState.ScoreContext): return sc.target) as Array[int]
+		return [] as Array[int]
+	static func randomise() -> SetUpEffect:
+		var c = randi_range(1, 2)
+		return SetUpEffect.new(ComedyType.values()[randi() % 4], c, c)
+
 class BitData extends Resource:
 	var texture: Texture2D = PlaceholderTexture2D.new()
 	var position: Vector2 = Vector2.ZERO
 	var connectors: Array
-	var call_back: int
-	
-	func _init(_connectors: Array, _texture: Texture2D, _callback: int) -> void:
+	var effects: ScoreEffects
+
+	func _init(_connectors: Array, _texture: Texture2D, _effects: ScoreEffects) -> void:
 		connectors = _connectors 
 		texture = _texture
-		call_back = _callback
-	
+		effects = _effects
+		
 	static func get_random() -> BitData:
 		return BitData.new(
 			range(randi_range(3, 4)).map(func (_i): return ConnectorData.get_random()),
 			TEXTURES[randi() % TEXTURES.size()],
-			randi() % 3
+			ScoreEffects.randomise()
 		)
-		
-		
+
 
 class ConnectorData extends Resource:
 	var type: ComedyType = ComedyType.Witty
@@ -161,3 +258,12 @@ class ConnectorData extends Resource:
 	static func get_random() -> ConnectorData:
 		return ConnectorData.new(ComedyType.values().pick_random())
 		
+
+static func get_comedy_type_color(type: ComedyType) -> Color:
+	return ComedyColor[(type as int)]
+
+static func get_comedy_type_name(type: ComedyType) -> String:
+	return ComedyType.keys()[type as int]
+
+static func get_formatted_comedy_type_name(type: ComedyType) -> String:
+	return "[color=%s]%s[/color]" % [get_comedy_type_color(type).to_html(), get_comedy_type_name(type)]

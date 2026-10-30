@@ -5,10 +5,12 @@ const BIT_DATA_UI = preload("res://Gig/Act/UI/DataPanel/bit_data_ui.tscn")
 signal dropped_bit(bit_data: BitDataUI, at_position: Vector2)
 
 func _ready() -> void:
-	for data in 5:
+	for data in 10:
 		var bit_data_ui : BitDataUI = BIT_DATA_UI.instantiate()
 		bit_data_ui.data = Models.BitData.get_random()
 		%BitDataDisplay.add_child(bit_data_ui)
+		var effects = bit_data_ui.data.effects
+		tooltip_text = "\n".join([effects.call_back, effects.set_up].filter(func (e): return e != null).map(func (e): return e.text))
 
 func _can_drop_data(_at_position: Vector2, data: Variant) -> bool:
 	return data is BitDataUI
