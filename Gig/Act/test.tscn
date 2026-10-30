@@ -57,6 +57,7 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "TEST"
 
+[connection signal="changed" from="ActState" to="." method="_on_act_state_changed"]
 [connection signal="new_bit" from="ActState" to="." method="_on_act_state_new_bit"]
 [connection signal="new_link" from="ActState" to="." method="_on_act_state_new_link"]
 [connection signal="tock" from="ActPlayer" to="." method="_on_act_player_tock"]

@@ -4,6 +4,8 @@ const MAX_BITS: int = 10
 const MAX_CHANGES: int = 20
 
 var changes: int = 0
+var bits: int:
+	get: return set_state.bits.size()
 
 var is_scoring: bool = false
 
@@ -12,9 +14,16 @@ var is_scoring: bool = false
 @onready var viewer: Viewer = %Viewer
 @onready var set_state: SetState = %SetState
 
+
+func update_preview() -> void:
+	var preview_act = act_player.get_preview(MAX_BITS - bits)
+	var preview_set = preview_act.map(func (c: ActConnector): return SetState.SetBit.new(c.bit, c))
+	%SetUI.add_preview(preview_set)
+
 func _on_act_state_changed() -> void:
-	#act_player.tick()
-	viewer.update_connector_path()
+	update_preview()
+
+	#viewer.update_connector_path()ath()
 
 func _on_act_state_new_bit(node: ActNode) -> void:
 	if changes >= MAX_CHANGES:
@@ -40,6 +49,7 @@ func _on_viewer_play_bit(bit: ActNode) -> void:
 	viewer.queue_redraw()
 	act_player.play(bit, is_scoring)
 	set_state.add_bit(bit, null)
+	update_preview()
 	#set_state.score(%AudienceUI.state.preferences)
 	#viewer.update_connector_path()
 
@@ -47,6 +57,7 @@ func _on_viewer_progress_player() -> void:
 	if changes >= MAX_CHANGES or set_state.bits.size() >= MAX_BITS:
 		return
 	act_player.play_next(is_scoring)
+	update_preview()
 
 func _on_viewer_toggle_link(link: ActLink) -> void:
 	act_state.toggle_link(link)
@@ -73,5 +84,5 @@ func _on_set_ui_score_end() -> void:
 	is_scoring = false
 
 func _process(_delta: float) -> void:
-	%BitsLeft.text = "%s jokes out of %s left in your set" % [MAX_BITS - set_state.bits.size(), MAX_BITS]
+	%BitsLeft.text = "%s jokes out of %s left in your set" % [MAX_BITS - bits, MAX_BITS]
 	%MovesLeft.text = "%s chages out of %s left you can make to your act" % [MAX_CHANGES - changes, MAX_CHANGES]
